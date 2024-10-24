@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class IpFilter extends OncePerRequestFilter {
 
-    private static final List<String> ALLOWED_IPS = Arrays.asList(
+    private static final List<String> BANNED_IPS  = Arrays.asList(
             "127.0.0.1",
             "0:0:0:0:0:0:0:1"
     );
@@ -23,11 +23,11 @@ public class IpFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String remoteIp = request.getRemoteAddr();
+        String getRemoteIp = request.getRemoteAddr();
 
-        if (!ALLOWED_IPS.contains(remoteIp)) {
+        if (BANNED_IPS.contains(getRemoteIp)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().write("Access denied for IP: " + remoteIp);
+            response.getWriter().write("Доступ запрещен для ip: " + getRemoteIp);
             return;
         }
 
